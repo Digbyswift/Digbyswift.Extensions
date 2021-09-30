@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 
@@ -41,9 +43,9 @@ namespace Digbyswift.Extensions.ThirdParty
             {
                 var videoId = fullYouTubeVideoUrl.ExtractYouTubeVideoId();
                 var query = ParseYoutubeQueryString(fullYouTubeVideoUrl);
-                query["rel"] = "0";
-                query["modestbranding"] = "1";
-                query["controls"] = "0";
+                query.Set("rel", "0");
+                query.Set("modestbranding", "1");
+                query.Set("controls", "0");
                 return $"https://www.youtube-nocookie.com/embed/{videoId}/?{query}";
             }
 
@@ -52,15 +54,27 @@ namespace Digbyswift.Extensions.ThirdParty
 
         private static NameValueCollection ParseYoutubeQueryString(string fullYouTubeVideoUrl)
         {
-            Uri youtubeUri;
-            Uri.TryCreate(fullYouTubeVideoUrl, UriKind.RelativeOrAbsolute, out youtubeUri);
-
+            Uri.TryCreate(fullYouTubeVideoUrl, UriKind.RelativeOrAbsolute, out var youtubeUri);
             if (!youtubeUri.IsAbsoluteUri)
             {
                 Uri.TryCreate($"https://{fullYouTubeVideoUrl}", UriKind.RelativeOrAbsolute, out youtubeUri);
             }
 
-            return HttpUtility.ParseQueryString(youtubeUri.Query);
+            var nvc = new NameValueCollection();
+
+            if (String.IsNullOrWhiteSpace(youtubeUri.Query))
+                return nvc;
+            
+            foreach (var item in youtubeUri.Query.Replace("?", "").SplitAndTrim('&'))
+            {
+                var itemParts = item.SplitAndTrim('=');
+                if (itemParts.Count != 2)
+                    continue;
+                
+                nvc.Add(itemParts[0], itemParts[1]);
+            }
+            
+            return nvc;
         }
     }
 }

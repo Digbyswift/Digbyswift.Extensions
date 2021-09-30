@@ -35,7 +35,7 @@ namespace Digbyswift.Extensions.ThirdParty
                 return videoUrl;
 
             var videoId = videoUrl.ExtractVimeoVideoId();
-            var query = HttpUtility.ParseQueryString(new Uri(videoUrl).Query);
+            var query = new Uri(videoUrl).Query;
 
             return $"https://player.vimeo.com/video/{videoId}/?{query}";
         }
