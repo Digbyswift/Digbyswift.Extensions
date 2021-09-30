@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net462;netstandard2.0</TargetFrameworks>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Title>Digbyswift.Extensions</Title>
+        <Authors />
+        <Copyright>Copyright © Digbyswift Ltd</Copyright>
+        <PackageProjectUrl>https://www.nuget.org/packages/Digbyswift.Extensions</PackageProjectUrl>
+        <PackageLicenseUrl>https://github.com/digbyswift/Digbyswift.Extensions/blob/master/LICENSE</PackageLicenseUrl>
+        <RepositoryUrl>https://www.nuget.org/packages/Digbyswift.Extensions</RepositoryUrl>
+        <PackageTags>c#</PackageTags>
+        <AssemblyVersion>1.0.0</AssemblyVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Digbyswift.Core" Version="1.0.0" />
+    </ItemGroup>
+
+</Project>

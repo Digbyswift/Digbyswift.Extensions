@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Digbyswift.Extensions", "Digbyswift.Extensions\Digbyswift.Extensions.csproj", "{70657AF1-494B-42D0-B7BA-B8C1DE882ACA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Digbyswift.Extensions.Test", "Digbyswift.Extensions.Test\Digbyswift.Extensions.Test.csproj", "{8D519146-23A7-47DD-9A90-B8D95B60DB3C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{70657AF1-494B-42D0-B7BA-B8C1DE882ACA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70657AF1-494B-42D0-B7BA-B8C1DE882ACA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70657AF1-494B-42D0-B7BA-B8C1DE882ACA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70657AF1-494B-42D0-B7BA-B8C1DE882ACA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D519146-23A7-47DD-9A90-B8D95B60DB3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D519146-23A7-47DD-9A90-B8D95B60DB3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D519146-23A7-47DD-9A90-B8D95B60DB3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D519146-23A7-47DD-9A90-B8D95B60DB3C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
