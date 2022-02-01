@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using System.Web;
 
 namespace Digbyswift.Extensions.ThirdParty
 {
@@ -21,14 +20,12 @@ namespace Digbyswift.Extensions.ThirdParty
 
             var match = matches[0];
 
-            return match.Groups.Count > 0 ? match.Groups[1].Value : string.Empty;
+            return match.Groups.Count == 3 ? match.Groups[2].Value : string.Empty;
         }
 
         /// <summary>
         /// If the given URL is a valid Vimeo video URL it is parsed to a Vimeo embed URL. Otherwise it is returned as-is.
         /// </summary>
-        /// <param name="videoUrl"></param>
-        /// <returns></returns>
         public static string ToVimeoEmbedUrl(this string videoUrl)
         {
             if (!videoUrl.IsVimeoUrl()) 
@@ -37,7 +34,9 @@ namespace Digbyswift.Extensions.ThirdParty
             var videoId = videoUrl.ExtractVimeoVideoId();
             var query = new Uri(videoUrl).Query;
 
-            return $"https://player.vimeo.com/video/{videoId}/?{query}";
+            return string.IsNullOrWhiteSpace(query)
+                ? $"https://player.vimeo.com/video/{videoId}/"
+                : $"https://player.vimeo.com/video/{videoId}/?{query}";
         }
     }
 }
