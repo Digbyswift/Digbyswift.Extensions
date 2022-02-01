@@ -21,7 +21,7 @@ namespace Digbyswift.Extensions.ThirdParty
 
             var match = matches[0];
 
-            return match.Groups.Count > 0 ? match.Groups[1].Value : string.Empty;
+            return match.Groups.Count > 0 ? match.Groups[2].Value : string.Empty;
         }
 
         /// <summary>
@@ -37,7 +37,9 @@ namespace Digbyswift.Extensions.ThirdParty
             var videoId = videoUrl.ExtractVimeoVideoId();
             var query = new Uri(videoUrl).Query;
 
-            return $"https://player.vimeo.com/video/{videoId}/?{query}";
+            return string.IsNullOrWhiteSpace(query)
+                ? $"https://player.vimeo.com/video/{videoId}/"
+                : $"https://player.vimeo.com/video/{videoId}/?{query}";
         }
     }
 }
