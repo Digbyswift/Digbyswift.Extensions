@@ -6,7 +6,7 @@ namespace Digbyswift.Extensions.ThirdParty
 {
     public static class VimeoStringExtensions
     {
-        private static readonly Regex VimeoUrlRegex = new Regex(@"vimeo\.com/(?:.*#|.*/videos/)?([0-9]+)", RegexOptions.IgnoreCase);
+        private static readonly Regex VimeoUrlRegex = new Regex(@"vimeo\.com\/(?:.*#|.*(videos|event)\/)?([0-9]+)", RegexOptions.IgnoreCase);
 
         public static bool IsVimeoUrl(this string videoUrl)
         {
