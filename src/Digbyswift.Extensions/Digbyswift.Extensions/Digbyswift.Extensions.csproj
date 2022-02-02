@@ -10,8 +10,8 @@
         <PackageLicenseUrl>https://github.com/digbyswift/Digbyswift.Extensions/blob/master/LICENSE</PackageLicenseUrl>
         <RepositoryUrl>https://www.nuget.org/packages/Digbyswift.Extensions</RepositoryUrl>
         <PackageTags>c#</PackageTags>
-        <AssemblyVersion>1.0.1</AssemblyVersion>
-        <PackageVersion>1.0.1</PackageVersion>
+        <AssemblyVersion>1.0.3</AssemblyVersion>
+        <PackageVersion>1.0.3</PackageVersion>
     </PropertyGroup>
 
     <ItemGroup>
