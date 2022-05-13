@@ -4,18 +4,26 @@
         <TargetFrameworks>net462;netstandard2.0</TargetFrameworks>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>Digbyswift.Extensions</Title>
-        <Authors />
+        <Authors>Digbyswift Ltd</Authors>
         <Copyright>Copyright © Digbyswift Ltd</Copyright>
         <PackageProjectUrl>https://www.nuget.org/packages/Digbyswift.Extensions</PackageProjectUrl>
-        <PackageLicenseUrl>https://github.com/digbyswift/Digbyswift.Extensions/blob/master/LICENSE</PackageLicenseUrl>
         <RepositoryUrl>https://www.nuget.org/packages/Digbyswift.Extensions</RepositoryUrl>
+        <PackageLicenseUrl>https://github.com/digbyswift/Digbyswift.Extensions/blob/master/LICENSE</PackageLicenseUrl>
         <PackageTags>c#</PackageTags>
-        <AssemblyVersion>1.0.3</AssemblyVersion>
-        <PackageVersion>1.0.3</PackageVersion>
+        <AssemblyVersion>1.0.5</AssemblyVersion>
+        <PackageVersion>1.0.5</PackageVersion>
+        <FileVersion>1.0.5</FileVersion>
+        <LangVersion>8</LangVersion>
+        <PackageIcon>package-icon.png</PackageIcon>
+        <PackageIconUrl>package-icon.png</PackageIconUrl>
     </PropertyGroup>
-
     <ItemGroup>
-      <PackageReference Include="Digbyswift.Core" Version="1.0.0" />
+      <None Include="../../../package-icon.png" Pack="true" PackagePath="" />
     </ItemGroup>
-
+    <ItemGroup>
+      <None Include="../../../LICENSE" Pack="true" PackagePath="" />
+    </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="Digbyswift.Core" Version="1.0.3" />
+    </ItemGroup>
 </Project>

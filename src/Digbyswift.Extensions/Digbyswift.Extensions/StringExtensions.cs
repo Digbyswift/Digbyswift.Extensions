@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using Digbyswift.Core.Constants;
+using Newtonsoft.Json.Linq;
 
 namespace Digbyswift.Extensions
 {
@@ -26,7 +27,7 @@ namespace Digbyswift.Extensions
 
         public static bool Contains(this string value, string toCheck, StringComparison comp)
         {
-            return toCheck != null && value?.IndexOf(toCheck, comp) >= 0;
+            return toCheck != null && value?.IndexOf(toCheck, comp) >= NumericConstants.Zero;
         }
 
         public static bool ContainsIgnoreCase(this string value, string toCheck)
@@ -69,13 +70,13 @@ namespace Digbyswift.Extensions
 
         public static string Truncate(this string value, int length, string suffix)
         {
-            if (length < 0)
+            if (length < NumericConstants.Zero)
                 throw new ArgumentOutOfRangeException(nameof(length));
 
             if (String.IsNullOrEmpty(value))
                 return value;
 
-            return value.Length <= length ? value : $"{value.Substring(0, length).Trim(GrammarCharacters)}{suffix}";
+            return value.Length <= length ? value : $"{value.Substring(NumericConstants.Zero, length).Trim(GrammarCharacters)}{suffix}";
         }
 
         public static string TruncateAtWord(this string input, int length)
@@ -88,8 +89,8 @@ namespace Digbyswift.Extensions
             if (String.IsNullOrWhiteSpace(input) || input.Length < length)
                 return input;
             
-            int lastIndexOfSpaceWithinLength = input.LastIndexOf(" ", length, StringComparison.Ordinal);
-            string truncatedText = input.Substring(0, (lastIndexOfSpaceWithinLength > 0) ? lastIndexOfSpaceWithinLength : length).Trim();
+            int lastIndexOfSpaceWithinLength = input.LastIndexOf(StringConstants.Space, length, StringComparison.Ordinal);
+            string truncatedText = input.Substring(0, (lastIndexOfSpaceWithinLength > NumericConstants.Zero) ? lastIndexOfSpaceWithinLength : length).Trim();
             if (truncatedText.Last() == CharConstants.Period)
                 return truncatedText;
 
@@ -126,7 +127,7 @@ namespace Digbyswift.Extensions
             if (value == null)
                 return null;
 
-            return new Regex(@"\s+").Replace(value, " ").Trim();
+            return new Regex(@"\s+").Replace(value, StringConstants.Space).Trim();
         }
 
         public static string TrimToNull(this string value)
@@ -145,7 +146,7 @@ namespace Digbyswift.Extensions
             return value.Trim();
         }
         
-        private static readonly char[] DefaultSeparators = { ' ' };
+        private static readonly char[] DefaultSeparators = { CharConstants.Space };
         public static IList<string> SplitAndTrim(this string value, params char[] separator)
         {
             return !String.IsNullOrWhiteSpace(value)
@@ -172,14 +173,8 @@ namespace Digbyswift.Extensions
             if (value == null)
                 return null;
 
-            string workingCharacterToReplace = characterToReplace.ToString();
-
-            if (ReservedRegexChars.Contains(characterToReplace))
-            {
-                workingCharacterToReplace = $@"\{characterToReplace}";
-            }
-
-            var reExcessHyphens = new Regex($"{workingCharacterToReplace}+");
+            var regexPattern = $"{(ReservedRegexChars.Contains(characterToReplace) ? StringConstants.BackSlash : null)}{characterToReplace.ToString()}+";
+            var reExcessHyphens = new Regex(regexPattern);
             return reExcessHyphens.Replace(value, characterToReplaceWith.ToString());
         }
         
@@ -200,7 +195,7 @@ namespace Digbyswift.Extensions
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
 
-            if(numberOfVisibleCharacter < 0) 
+            if(numberOfVisibleCharacter < NumericConstants.Zero) 
                 throw new ArgumentOutOfRangeException(nameof(numberOfVisibleCharacter));
 
             if(numberOfVisibleCharacter > value.Length) 
@@ -209,7 +204,7 @@ namespace Digbyswift.Extensions
             if (String.IsNullOrWhiteSpace(value))
                 return String.Empty;
 
-            return value.Substring(0, numberOfVisibleCharacter).PadRight(value.Length, CharConstants.Star);
+            return value.Substring(NumericConstants.Zero, numberOfVisibleCharacter).PadRight(value.Length, CharConstants.Star);
         }
 
         public static string MaskLeft(this string value, int numberOfVisibleCharacter)
@@ -217,7 +212,7 @@ namespace Digbyswift.Extensions
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
 
-            if(numberOfVisibleCharacter < 0) 
+            if(numberOfVisibleCharacter < NumericConstants.Zero) 
                 throw new ArgumentOutOfRangeException(nameof(numberOfVisibleCharacter));
 
             if(numberOfVisibleCharacter > value.Length) 
@@ -233,11 +228,35 @@ namespace Digbyswift.Extensions
         {
             if (string.IsNullOrEmpty(enumDescription))
             {
-                int defaultEnumValue = 0;
+                int defaultEnumValue = NumericConstants.Zero;
                 return (T)Enum.ToObject(typeof(T), defaultEnumValue);
             }
-            var enumName = enumDescription.Replace(" ", string.Empty);
+            var enumName = enumDescription.Replace(StringConstants.Space, string.Empty);
             return (T)Enum.Parse(typeof(T), enumName);
         }
+        
+        public static bool IsJson(this string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return false;
+
+            var workingValue = value.Trim();
+
+            if (!(workingValue.StartsWith("{") && workingValue.EndsWith("}")) ||
+                !(workingValue.StartsWith("[") && !workingValue.EndsWith("]")))
+            {
+                return false;
+            }
+
+            try
+            {
+                JToken.Parse(workingValue);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        } 
     }
 }
