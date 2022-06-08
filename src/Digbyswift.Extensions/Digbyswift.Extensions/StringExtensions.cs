@@ -25,6 +25,11 @@ namespace Digbyswift.Extensions
             return value;
         }
 
+        public static bool EqualsIgnoreCase(this string value, string toCheck)
+        {
+            return value.Equals(toCheck, StringComparison.OrdinalIgnoreCase);
+        }
+
         public static bool Contains(this string value, string toCheck, StringComparison comp)
         {
             return toCheck != null && value?.IndexOf(toCheck, comp) >= NumericConstants.Zero;
