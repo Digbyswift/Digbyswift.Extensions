@@ -22,10 +22,10 @@ namespace Digbyswift.Extensions
             if (!dictionary.ContainsKey(key))
                 return false;
 
-            return dictionary[key].Equals(value);
+            return dictionary[key]!.Equals(value);
         }
 
-        public static bool ContainsKeyAndValue(this IDictionary<string, string> dictionary, string key, string value, StringComparison stringComparison = StringComparison.CurrentCulture)
+        public static bool ContainsKeyAndValue<TKey>(this IDictionary<TKey, string> dictionary, TKey key, string value, StringComparison stringComparison = StringComparison.CurrentCulture)
         {
             if (!dictionary.ContainsKey(key))
                 return false;
@@ -34,6 +34,7 @@ namespace Digbyswift.Extensions
         }
 
         public static TValue GetOrDefault<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue)
+            where TKey : notnull
         {
             if (!dictionary.ContainsKey(key))
                 return defaultValue;
@@ -41,7 +42,9 @@ namespace Digbyswift.Extensions
             return dictionary[key];
         }
 
-        public static TValue GetOrNull<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key) where TValue : class
+        public static TValue? GetOrNull<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key)
+            where TKey : notnull
+            where TValue : class?        
         {
             if (!dictionary.ContainsKey(key))
                 return null;

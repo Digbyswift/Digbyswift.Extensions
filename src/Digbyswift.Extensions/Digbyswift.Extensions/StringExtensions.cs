@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using Digbyswift.Core.Constants;
@@ -11,11 +10,11 @@ namespace Digbyswift.Extensions
 {
     public static class StringExtensions
     {
-        private static readonly char[] GrammarCharacters = new[] {',', ';', ':', '!', '\'', '\"', '\\', '/', '(', ')'};
+        private static readonly char[] GrammarCharacters = {',', ';', ':', '!', '\'', '\"', '\\', '/', '(', ')'};
         private static readonly char[] ReservedRegexChars = { '[', '\\', '^', '$', '.', '|', '*', '+', '?', '(', ')' };
-        private static readonly Regex WhiteSpaceRegex = new Regex(@"\s+");
-        private static readonly Regex UrlFriendlyCharactersRegex = new Regex(@"([^\w]+)", RegexOptions.IgnoreCase);
-        private static readonly Regex SingleQuoteRegex = new Regex(@"([’']+)");
+        private static readonly Regex WhiteSpaceRegex = new(@"\s+");
+        private static readonly Regex UrlFriendlyCharactersRegex = new(@"([^\w]+)", RegexOptions.IgnoreCase);
+        private static readonly Regex SingleQuoteRegex = new(@"([’']+)");
 
         public static string Coalesce(this string value, string valueWhenNullOrEmpty)
         {
@@ -32,7 +31,7 @@ namespace Digbyswift.Extensions
 
         public static bool Contains(this string value, string toCheck, StringComparison comp)
         {
-            return toCheck != null && value?.IndexOf(toCheck, comp) >= NumericConstants.Zero;
+            return value.IndexOf(toCheck, comp) >= NumericConstants.Zero;
         }
 
         public static bool ContainsIgnoreCase(this string value, string toCheck)
@@ -42,14 +41,11 @@ namespace Digbyswift.Extensions
 
         public static bool ContainsIgnoreCase(this IEnumerable<string> value, string toCheck)
         {
-            return value?.Contains(toCheck.ToLowerInvariant(), StringComparer.OrdinalIgnoreCase) ?? false;
+            return value.Contains(toCheck.ToLowerInvariant(), StringComparer.OrdinalIgnoreCase);
         }
 
         public static string RemoveWhitespace(this string value)
         {
-            if (value == null)
-                return null;
-
             if (WhiteSpaceRegex.IsMatch(value))
                 return String.Empty;
 
@@ -70,7 +66,7 @@ namespace Digbyswift.Extensions
 
         public static string Truncate(this string value, int length)
         {
-            return Truncate(value, length, null); 
+            return Truncate(value, length, String.Empty);
         }
 
         public static string Truncate(this string value, int length, string suffix)
@@ -86,7 +82,7 @@ namespace Digbyswift.Extensions
 
         public static string TruncateAtWord(this string input, int length)
         {
-            return TruncateAtWord(input, length, null);
+            return TruncateAtWord(input, length, String.Empty);
         }
 
         public static string TruncateAtWord(this string input, int length, string suffix)
@@ -105,7 +101,7 @@ namespace Digbyswift.Extensions
             return $"{truncatedText.Trim(GrammarCharacters)}{suffix}";
         }
 
-        public static string ToUrlFriendly(this string value)
+        public static string? ToUrlFriendly(this string value)
         {
             if (String.IsNullOrWhiteSpace(value))
                 return null;
@@ -129,13 +125,10 @@ namespace Digbyswift.Extensions
         /// </summary>
         public static string TrimWithin(this string value)
         {
-            if (value == null)
-                return null;
-
             return new Regex(@"\s+").Replace(value, StringConstants.Space).Trim();
         }
 
-        public static string TrimToNull(this string value)
+        public static string? TrimToNull(this string value)
         {
             if (String.IsNullOrWhiteSpace(value))
                 return null;
@@ -143,7 +136,7 @@ namespace Digbyswift.Extensions
             return value.Trim();
         }
 
-        public static string TrimToDefault(this string value, string defaultValue = null)
+        public static string? TrimToDefault(this string value, string? defaultValue = null)
         {
             if (String.IsNullOrWhiteSpace(value))
                 return defaultValue;
@@ -152,7 +145,7 @@ namespace Digbyswift.Extensions
         }
         
         private static readonly char[] DefaultSeparators = { CharConstants.Space };
-        public static IList<string> SplitAndTrim(this string value, params char[] separator)
+        public static IList<string> SplitAndTrim(this string value, params char[]? separator)
         {
             return !String.IsNullOrWhiteSpace(value)
                 ? value.Split(separator ?? DefaultSeparators).Where(x => !String.IsNullOrWhiteSpace(x)).Select(x => x.Trim()).ToList()
@@ -161,9 +154,6 @@ namespace Digbyswift.Extensions
 
         public static string StripMarkup(this string input)
         {
-            if (input == null)
-                return null;
-
             if (String.IsNullOrWhiteSpace(input))
                 return String.Empty;
 
@@ -175,9 +165,6 @@ namespace Digbyswift.Extensions
         /// </summary>
         public static string ReplaceExcess(this string value, char characterToReplace, char characterToReplaceWith)
         {
-            if (value == null)
-                return null;
-
             var regexPattern = $"{(ReservedRegexChars.Contains(characterToReplace) ? StringConstants.BackSlash : null)}{characterToReplace.ToString()}+";
             var reExcessHyphens = new Regex(regexPattern);
             return reExcessHyphens.Replace(value, characterToReplaceWith.ToString());
@@ -240,28 +227,5 @@ namespace Digbyswift.Extensions
             return (T)Enum.Parse(typeof(T), enumName);
         }
         
-        public static bool IsJson(this string value)
-        {
-            if (string.IsNullOrWhiteSpace(value))
-                return false;
-
-            var workingValue = value.Trim();
-
-            if (!(workingValue.StartsWith("{") && workingValue.EndsWith("}")) ||
-                !(workingValue.StartsWith("[") && !workingValue.EndsWith("]")))
-            {
-                return false;
-            }
-
-            try
-            {
-                JToken.Parse(workingValue);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        } 
     }
 }

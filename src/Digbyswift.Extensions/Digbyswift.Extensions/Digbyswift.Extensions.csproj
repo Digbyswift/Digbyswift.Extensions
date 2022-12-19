@@ -16,6 +16,7 @@
         <LangVersion>8</LangVersion>
         <PackageIcon>package-icon.png</PackageIcon>
         <PackageIconUrl>package-icon.png</PackageIconUrl>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
     <ItemGroup>
       <None Include="../../../package-icon.png" Pack="true" PackagePath="" />

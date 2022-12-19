@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Specialized;
 using System.Text.RegularExpressions;
-using System.Web;
-using Digbyswift.Core.RegularExpressions;
 
 namespace Digbyswift.Extensions.ThirdParty
 {
@@ -19,7 +16,7 @@ namespace Digbyswift.Extensions.ThirdParty
             return TweetUrlRegex.IsMatch(value);
         }
 
-        public static string ExtractIdFromTweetUrl(this string value)
+        public static string? ExtractIdFromTweetUrl(this string value)
         {
             var matches = TweetUrlRegex.Matches(value);
             if (matches.Count != 1 && matches[0].Groups.Count != 4)

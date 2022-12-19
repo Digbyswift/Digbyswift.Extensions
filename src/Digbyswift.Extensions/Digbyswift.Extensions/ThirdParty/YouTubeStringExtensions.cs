@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
 using System.Text.RegularExpressions;
-using System.Web;
 
 namespace Digbyswift.Extensions.ThirdParty
 {
@@ -54,18 +51,20 @@ namespace Digbyswift.Extensions.ThirdParty
 
         private static NameValueCollection ParseYoutubeQueryString(string fullYouTubeVideoUrl)
         {
+            var nvc = new NameValueCollection();
             Uri.TryCreate(fullYouTubeVideoUrl, UriKind.RelativeOrAbsolute, out var youtubeUri);
+            if (youtubeUri == null)
+                return nvc;
+            
             if (!youtubeUri.IsAbsoluteUri)
             {
                 Uri.TryCreate($"https://{fullYouTubeVideoUrl}", UriKind.RelativeOrAbsolute, out youtubeUri);
             }
 
-            var nvc = new NameValueCollection();
-
-            if (String.IsNullOrWhiteSpace(youtubeUri.Query))
+            if (String.IsNullOrWhiteSpace(youtubeUri?.Query))
                 return nvc;
             
-            foreach (var item in youtubeUri.Query.Replace("?", "").SplitAndTrim('&'))
+            foreach (var item in youtubeUri!.Query.Replace("?", "").SplitAndTrim('&'))
             {
                 var itemParts = item.SplitAndTrim('=');
                 if (itemParts.Count != 2)
