@@ -15,17 +15,17 @@ namespace Digbyswift.Extensions
         private static readonly Regex UrlFriendlyCharactersRegex = new(@"([^\w]+)", RegexOptions.IgnoreCase);
         private static readonly Regex SingleQuoteRegex = new(@"([’']+)");
 
-        public static string Coalesce(this string value, string valueWhenNullOrEmpty)
-        {
-            if (String.IsNullOrWhiteSpace(value))
-                return valueWhenNullOrEmpty;
-
-            return value;
-        }
-
         public static bool EqualsIgnoreCase(this string value, string toCheck)
         {
             return value.Equals(toCheck, StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// Returns the value provided when the input is null, empty or whitespace.   
+        /// </summary>
+        public static string Coalesce(this string? value, string valueWhenNullOrEmpty)
+        {
+            return String.IsNullOrWhiteSpace(value) ? valueWhenNullOrEmpty : value!;
         }
 
         public static bool Contains(this string value, string toCheck, StringComparison comp)
@@ -41,26 +41,6 @@ namespace Digbyswift.Extensions
         public static bool ContainsIgnoreCase(this IEnumerable<string> value, string toCheck)
         {
             return value.Contains(toCheck, StringComparer.OrdinalIgnoreCase);
-        }
-
-        public static string RemoveWhitespace(this string value)
-        {
-            if (WhiteSpaceRegex.IsMatch(value))
-                return String.Empty;
-
-            return WhiteSpaceRegex.Replace(value, String.Empty).Trim();
-        }
-
-        public static bool ToBool(this string value)
-        {
-            var result = false;
-
-            if (Boolean.TryParse(value, out var actualResult))
-            {
-                result = actualResult;
-            }
-
-            return result;
         }
 
         public static string Truncate(this string value, int length)
@@ -97,26 +77,7 @@ namespace Digbyswift.Extensions
             if (truncatedText.Last() == CharConstants.Period)
                 return truncatedText;
 
-            return $"{truncatedText.Trim(GrammarCharacters)}{suffix}";
-        }
-
-        public static string? ToUrlFriendly(this string value)
-        {
-            if (String.IsNullOrWhiteSpace(value))
-                return null;
-
-            string workingString = value.ToLower();
-
-            // Remove quotes so that they aren't replaced by hyphens later.
-            workingString = SingleQuoteRegex.Replace(workingString, String.Empty);
-
-            // Remove excess whitespace
-            workingString = workingString.TrimWithin();
-
-            // Replace non URL-friendly characters
-            workingString = UrlFriendlyCharactersRegex.Replace(workingString, StringConstants.Hyphen);
-
-            return workingString.ReplaceExcess(CharConstants.Hyphen, CharConstants.Hyphen).Trim(CharConstants.Hyphen);
+            return String.Concat(truncatedText.Trim(GrammarCharacters), suffix);
         }
 
         /// <summary>
@@ -144,11 +105,25 @@ namespace Digbyswift.Extensions
         }
         
         private static readonly char[] DefaultSeparators = { CharConstants.Space };
+        
+        /// <summary>
+        /// Performs a split, removes empty entries and then trims the remaining
+        /// entries. If no separators are specified, the split occurs on each
+        /// space character.   
+        /// </summary>
         public static IList<string> SplitAndTrim(this string value, params char[]? separator)
         {
             return !String.IsNullOrWhiteSpace(value)
                 ? value.Split(separator ?? DefaultSeparators).Where(x => !String.IsNullOrWhiteSpace(x)).Select(x => x.Trim()).ToList()
                 : new List<string>();
+        }
+                
+        public static string RemoveWhitespace(this string value)
+        {
+            if (WhiteSpaceRegex.IsMatch(value))
+                return String.Empty;
+
+            return WhiteSpaceRegex.Replace(value, String.Empty).Trim();
         }
 
         public static string StripMarkup(this string input)
@@ -214,7 +189,38 @@ namespace Digbyswift.Extensions
 
             return value.Substring(value.Length - numberOfVisibleCharacter, numberOfVisibleCharacter).PadLeft(value.Length, CharConstants.Star);
         }
-        
+
+        public static string? ToUrlFriendly(this string value)
+        {
+            if (String.IsNullOrWhiteSpace(value))
+                return null;
+
+            string workingString = value.ToLower();
+
+            // Remove quotes so that they aren't replaced by hyphens later.
+            workingString = SingleQuoteRegex.Replace(workingString, String.Empty);
+
+            // Remove excess whitespace
+            workingString = workingString.TrimWithin();
+
+            // Replace non URL-friendly characters
+            workingString = UrlFriendlyCharactersRegex.Replace(workingString, StringConstants.Hyphen);
+
+            return workingString.ReplaceExcess(CharConstants.Hyphen, CharConstants.Hyphen).Trim(CharConstants.Hyphen);
+        }
+
+        public static bool ToBool(this string value)
+        {
+            var result = false;
+
+            if (Boolean.TryParse(value, out var actualResult))
+            {
+                result = actualResult;
+            }
+
+            return result;
+        }
+
         public static T ToEnum<T>(this string enumDescription)
         {
             if (string.IsNullOrEmpty(enumDescription))

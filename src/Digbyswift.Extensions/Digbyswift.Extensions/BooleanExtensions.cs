@@ -8,10 +8,10 @@
             return value ? "Yes" : "No";
         }
         
-        public static string AsYesNo(this bool? source, string nullDefault)
+        public static string AsYesNo(this bool? source, string valueWhenNull)
         {
             if (!source.HasValue)
-                return nullDefault;
+                return valueWhenNull;
 
             return source.Value ? "Yes" : "No";
         }
