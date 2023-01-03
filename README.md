@@ -1,5 +1,7 @@
 # Digbyswift.Extensions
 
+[![NuGet version (Digbyswift.Extensions)](https://img.shields.io/nuget/v/Digbyswift.Extensions.svg)](https://www.nuget.org/packages/Digbyswift.Extensions/)
+
 A library of general-use extensions for everyday coding.
 
 ## Enumerable
@@ -36,7 +38,7 @@ A library of general-use extensions for everyday coding.
 
 ## String
 
-- `Coalesce(string valueWhenNullOrEmpty)`
+- `Coalesce(string? valueWhenNullOrEmpty)`
 - `EqualsIgnoreCase(string toCheck)`
 - `Contains(string toCheck, StringComparison comp)`
 - `ContainsIgnoreCase(string toCheck)`
@@ -58,7 +60,6 @@ A library of general-use extensions for everyday coding.
 - `MaskRight(int numberOfVisibleCharacter)`
 - `MaskLeft(int numberOfVisibleCharacter)`
 - `ToEnum()`
-- `IsJson()`
 
 ## String validation
 
@@ -79,8 +80,6 @@ A library of general-use extensions for everyday coding.
 - `ContainsIPv6()`
 - `ContainsUkTelephone()`
 - `ContainsMarkup()`
-- `Contains()`
-- `Contains()`
 
 ## String compression (GZip)
 

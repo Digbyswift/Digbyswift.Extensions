@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Digbyswift.Core.Constants;
-using Newtonsoft.Json.Linq;
 
 namespace Digbyswift.Extensions
 {
@@ -41,7 +40,7 @@ namespace Digbyswift.Extensions
 
         public static bool ContainsIgnoreCase(this IEnumerable<string> value, string toCheck)
         {
-            return value.Contains(toCheck.ToLowerInvariant(), StringComparer.OrdinalIgnoreCase);
+            return value.Contains(toCheck, StringComparer.OrdinalIgnoreCase);
         }
 
         public static string RemoveWhitespace(this string value)
@@ -56,7 +55,7 @@ namespace Digbyswift.Extensions
         {
             var result = false;
 
-            if (bool.TryParse(value, out var actualResult))
+            if (Boolean.TryParse(value, out var actualResult))
             {
                 result = actualResult;
             }

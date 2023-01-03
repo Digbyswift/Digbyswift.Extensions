@@ -1,11 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
 
         <IsPackable>false</IsPackable>
 
         <RootNamespace>Digbyswift.Extensions.Test</RootNamespace>
+
+        <TargetFrameworks>net48;net6.0;netstandard2.0</TargetFrameworks>
+
+        <OutputType>Library</OutputType>
+
+        <LangVersion>10</LangVersion>
+
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
